@@ -1,6 +1,6 @@
 {
   "name": "@nest-app/uapp",
-  "version": "2.1.11",
+  "version": "1.0.0",
   "description": "uapp 是一个方便 uniapp 离线打包的脚手架工具，类似 cordova, expo, Taro 等项目cli的作用。uapp还包含 uapp-android, uapp-ios 两个平台的模板代码",
   "main": "bin/uapp",
   "bin": {
@@ -34,13 +34,5 @@
   "homepage": "https://github.com/lc-os/uapp#readme",
   "directories": {
     "doc": "doc"
-  },
-  "author": "Qisen",
-  "license": "Apache-2.0",
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0"
-    }
-  ]
+  }
 }
