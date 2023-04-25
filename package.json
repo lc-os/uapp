@@ -1,5 +1,5 @@
 {
-  "name": "uapp",
+  "name": "@nest-app/uapp",
   "version": "2.1.11",
   "description": "uapp 是一个方便 uniapp 离线打包的脚手架工具，类似 cordova, expo, Taro 等项目cli的作用。uapp还包含 uapp-android, uapp-ios 两个平台的模板代码",
   "main": "bin/uapp",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uappkit/uapp.git"
+    "url": "git+https://github.com/lc-os/uapp.git"
   },
   "keywords": [
     "uapp",
@@ -29,9 +29,9 @@
     "update-notifier": "^5.1.0"
   },
   "bugs": {
-    "url": "https://github.com/uappkit/uapp/issues"
+    "url": "https://github.com/lc-os/uapp/issues"
   },
-  "homepage": "https://github.com/uappkit/uapp#readme",
+  "homepage": "https://github.com/lc-os/uapp#readme",
   "directories": {
     "doc": "doc"
   },

@@ -140,6 +140,7 @@ uapp publish debug
     "prepare.dir": "${SRC}/../dist/build/app",
     "prepare.before": "cd ${SRC}/../ && npm run build:app",
     "prepare.after": "uapp publish debug"
+    'icon': 'icon地址'
   },
   "app-plus": {
     "distribute": {

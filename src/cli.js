@@ -208,6 +208,8 @@ module.exports = function (inputArgs) {
     manifest.uapp.versionName = manifest.uapp[`${projectType}.versionName`] || manifest.versionName;
     manifest.uapp.versionCode = manifest.uapp[`${projectType}.versionCode`] || manifest.versionCode;
     manifest.uapp.appkey = manifest.uapp[`${projectType}.appkey`];
+    manifest.uapp.icon = manifest.uapp[`${projectType}.icon`] || manifest.uapp.icon || manifest.icon;
+
 
     console.log();
     console.log('- appid       : ' + manifest.appid);
@@ -260,6 +262,9 @@ module.exports = function (inputArgs) {
         path.join(appDir, 'app/build/outputs/apk/debug/app-debug.apk'),
         path.join(path.dirname(fs.realpathSync(localLinkManifest)), 'unpackage/debug/android_debug.apk')
       );
+      
+      //打开文件夹
+      require('child_process').exec('open app/build/outputs/apk/debug');
       return;
     }
 
@@ -359,18 +364,33 @@ function processAndroid() {
   content = content.replace(/(app_name[',\s]+")(.*)(")/, '$1' + manifest.uapp.name + '$3');
   content = content.replace(/(versionCode\s+)(.*)/, '$1' + manifest.uapp.versionCode);
   content = content.replace(/(versionName\s+")(.*)(")/, '$1' + manifest.uapp.versionName + '$3');
-  content = content.replace(/("DCLOUD_APPKEY"\s+:\s+")(.*)(",)/, '$1' + manifest.uapp.appkey + '$3');
+  fs.writeFileSync(baseGradleFile, content);
 
-  content = content.replace(
+  //修改DCLOUD_APPKEY ---------- START
+  let customGradleFile = path.join(appDir, 'app/custom.gradle');
+  let customContent = fs.readFileSync(customGradleFile, 'utf-8');
+  customContent = customContent.replace(/("DCLOUD_APPKEY"\s+:\s+")(.*)(",)/, '$1' + manifest.uapp.appkey + '$3');
+  customContent = customContent.replace(
     /("WX_APPID"\s+:\s+")(.*)(",)/,
     '$1' + manifest['app-plus'].distribute.sdkConfigs.oauth.weixin.appid + '$3'
   );
-
-  content = content.replace(
+  customContent = customContent.replace(
     /("WX_SECRET"\s+:\s+")(.*)(",)/,
     '$1' + manifest['app-plus'].distribute.sdkConfigs.oauth.weixin.appsecret + '$3'
   );
-  fs.writeFileSync(baseGradleFile, content);
+  fs.writeFileSync(customGradleFile, customContent);
+
+  let xmlFile = path.join(appDir, 'app/src/main/AndroidManifest.xml');
+  let xmlContent = fs.readFileSync(xmlFile, 'utf-8');
+  xmlContent = xmlContent.replace(/(\${DCLOUD_APPKEY})/, manifest.uapp.appkey);
+  fs.writeFileSync(xmlFile, xmlContent);
+  //修改DCLOUD_APPKEY ---------- END  
+
+  //修改ICON ---------- START
+  let iconFile = path.join(appDir, 'app/src/main/res/drawable-xxhdpi/icon.png');
+  fs.copyFileSync(manifest.uapp.icon, iconFile)
+  //修改ICON ---------- END
+
 
   let sourceDir = path.join(appDir, 'app/src/main/java/');
   for (const entryFile of [wxEntryActivityFile, wXPayEntryActivityFile]) {
